@@ -5,8 +5,7 @@ This is the official repository of [**GraspNeRF: Multiview-based 6-DoF Grasp Det
 For more information, please visit our [**project page**](https://pku-epic.github.io/GraspNeRF/).
 
 ## Introduction
-![teaser](images/teaser.png)
-<img src="https://github.com/PKU-EPIC/GraspNeRF/images/teaser.png" width="640">
+<img src="images/teaser.png" width="640">
 
 In this work, we propose a multiview RGB-based 6-DoF grasp detection network, **GraspNeRF**, 
 that leverages the **generalizable neural radiance field (NeRF)** to achieve material-agnostic object grasping in clutter. 
