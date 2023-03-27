@@ -17,8 +17,8 @@ Experiments in synthetic and real-world environments demonstrate that our method
 
 ## Overview
 This repository provides:
-- PyTorch code and weights of GraspNeRF: Coming soon.
-- Multiview 6-DoF Grasping Dataset: Coming soon.
+- PyTorch code, and weights of GraspNeRF: Coming soon (this week).
+- Multiview 6-DoF Grasping Dataset Generator and Examples: Coming soon (this or next week).
 
 
 ## Citation
