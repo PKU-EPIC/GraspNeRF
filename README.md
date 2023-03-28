@@ -17,9 +17,25 @@ Experiments in synthetic and real-world environments demonstrate that our method
 
 ## Overview
 This repository provides:
-- PyTorch code, and weights of GraspNeRF: Coming soon (this week).
+- PyTorch code, and weights of GraspNeRF.
 - Multiview 6-DoF Grasping Dataset Generator and Examples: Coming soon (this or next week).
 
+## Dependency
+Please run 
+```
+pip install -r requirements.txt
+```
+to install dependency.
+
+## Data
+Please change the DATA_ROOT_DIR in `src/nr/asset.py` to your data path.
+
+## Training
+```
+cd src/nr
+run `bash train.sh PATH_TO_CONFIG GPU_ID`. \
+e.g. `bash train.sh configs/nrvgn_sdf.yaml 0`
+```
 
 ## Citation
 If you find our work useful in your research, please consider citing:
