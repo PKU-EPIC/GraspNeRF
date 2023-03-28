@@ -4,6 +4,9 @@ This is the official repository of [**GraspNeRF: Multiview-based 6-DoF Grasp Det
 
 For more information, please visit our [**project page**](https://pku-epic.github.io/GraspNeRF/).
 
+## News
+- We have released an incomplete preview in the dev branch, and we will refine the code and merge it into the main branch this week.
+
 ## Introduction
 <img src="images/teaser.png" width="640">
 
@@ -17,8 +20,8 @@ Experiments in synthetic and real-world environments demonstrate that our method
 
 ## Overview
 This repository provides:
-- PyTorch code, and weights of GraspNeRF: Coming soon (this week).
-- Multiview 6-DoF Grasping Dataset Generator and Examples: Coming soon (this or next week).
+- PyTorch code, and weights of GraspNeRF: Coming soon.
+- Multiview 6-DoF Grasping Dataset Generator and Examples: Coming soon.
 
 
 ## Citation
