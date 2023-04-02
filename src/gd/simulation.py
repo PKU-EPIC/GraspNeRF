@@ -26,30 +26,21 @@ class ClutterRemovalSim(object):
         self.world = btsim.BtWorld(self.gui)
         self.gripper = Gripper(self.world)
         self.size = 6 * self.gripper.finger_depth
-        intrinsic = CameraIntrinsic(640, 480, 540.0, 540.0, 320.0, 240.0)
+        intrinsic = CameraIntrinsic(640, 480, 540.0, 540.0, 320.0, 240.0) # TODO: cfg
         self.camera = self.world.add_camera(intrinsic, 0.1, 2.0)
 
         ##
         self.args = args
         self.renderer_root_dir = renderer_root_dir
         if self.args.load_scene_descriptor:
-            if self.args.check_seen_scene:
-                if self.scene == "pile":
-                    dir_name = "pile_830-880"
-                elif self.scene == "packed":
-                    dir_name = "packed_170-220"
-                scene_root_dir = os.path.join(renderer_root_dir, "data/mesh_pose_list", dir_name)
-                self.scene_descriptor_list = [os.path.join(scene_root_dir, i) for i in sorted(os.listdir(scene_root_dir))]
-            else:
-                if self.scene == "pile":
-                    dir_name = "pile_pile_test_200"
-                elif self.scene == "packed":
-                    dir_name = "packed_packed_test_200"
-                elif self.scene == "single":
-                    dir_name = "single_single_test_200"
-                scene_root_dir = os.path.join(renderer_root_dir, "data/mesh_pose_list", dir_name)
-                self.scene_descriptor_list = [os.path.join(scene_root_dir, i) for i in sorted(os.listdir(scene_root_dir))]
-        ##
+            if self.scene == "pile":
+                dir_name = "pile_pile_test_200"
+            elif self.scene == "packed":
+                dir_name = "packed_packed_test_200"
+            elif self.scene == "single":
+                dir_name = "single_single_test_200"
+            scene_root_dir = os.path.join(renderer_root_dir, "data/mesh_pose_list", dir_name)
+            self.scene_descriptor_list = [os.path.join(scene_root_dir, i) for i in sorted(os.listdir(scene_root_dir))]
 
     @property
     def num_objects(self):
@@ -93,22 +84,18 @@ class ClutterRemovalSim(object):
                 raise ValueError("Invalid scene argument")
         elif self.args.load_scene_descriptor:
             scene_descriptor_npz = self.scene_descriptor_list[n_round]
-            if self.args.check_seen_scene:
-                urdfs_and_poses_dict = self.generate_seen_scene(table_height, scene_descriptor_npz)
-                return urdfs_and_poses_dict
+
+            if self.scene == "pile":
+                urdfs_and_poses_dict = self.generate_pile_scene(object_count, table_height, scene_descriptor_npz)
+            elif self.scene == "packed":
+                urdfs_and_poses_dict = self.generate_packed_scene(object_count, table_height, scene_descriptor_npz)
+            elif self.scene == "single":
+                urdfs_and_poses_dict = self.generate_packedsingle_scene(object_count, table_height, scene_descriptor_npz)
             else:
-                if self.scene == "pile":
-                    urdfs_and_poses_dict = self.generate_pile_scene(object_count, table_height, scene_descriptor_npz)
-                elif self.scene == "packed":
-                    urdfs_and_poses_dict = self.generate_packed_scene(object_count, table_height, scene_descriptor_npz)
-                elif self.scene == "single":
-                    urdfs_and_poses_dict = self.generate_packedsingle_scene(object_count, table_height, scene_descriptor_npz)
-                else:
-                    raise ValueError("Invalid scene argument")
-                return urdfs_and_poses_dict
+                raise ValueError("Invalid scene argument")
+            return urdfs_and_poses_dict
         else:
-            print("TODO")
-        ##
+            raise NotImplementedError
 
     def draw_workspace(self):
         points = workspace_lines(self.size)
@@ -155,7 +142,6 @@ class ClutterRemovalSim(object):
             scale = obj_scale_list[i]
             body = self.world.load_urdf(urdf, pose, scale=scale)
             body.set_pose(pose=Transform(rotation, T))
-            #self.wait_for_objects_to_rest(timeout=1.0)
 
         # remove box
         self.world.remove_body(box)
@@ -183,7 +169,7 @@ class ClutterRemovalSim(object):
             obj_scale_list = [value[0] for value in dict.values()]
             obj_quat_list = [value[1] for value in dict.values()]
             obj_xy_list = [value[2] for value in dict.values()]
-            if self.scene != self.object_set:   # 对原始mesh做了处理，新obj放在了pile_xxx下
+            if self.scene != self.object_set:
                 urdf_path_list = [os.path.join(self.renderer_root_dir, value[3].replace(self.scene, self.object_set)) for value in dict.values()]
             else:
                 urdf_path_list = [os.path.join(self.renderer_root_dir, value[3]) for value in dict.values()]
@@ -249,12 +235,10 @@ class ClutterRemovalSim(object):
                 x = obj_x_list[attempts]
                 y = obj_y_list[attempts]
                 scale = obj_scale_list[attempts]
-                #print(scale, angle, x, y, str(urdf))
 
             rotation = Rotation.from_rotvec(angle * np.r_[0.0, 0.0, 1.0])
             z = 1.0
             pose = Transform(rotation, np.r_[x, y, z])
-            #print(body_id, pose.rotation.as_quat(), pose.translation)
             body = self.world.load_urdf(urdf, pose, scale=self.global_scaling * scale)
             lower, upper = self.world.p.getAABB(body.uid)
             z = table_height + 0.5 * (upper[2] - lower[2]) + 0.002
@@ -288,7 +272,6 @@ class ClutterRemovalSim(object):
 
     def generate_packedsingle_scene(self, object_count, table_height, scene_descriptor_npz=None):
         attempts = 0
-        # max_attempts = 12
 
         if self.args.gen_scene_descriptor:
             urdfs_and_poses_dict = {}
@@ -303,7 +286,6 @@ class ClutterRemovalSim(object):
             else:
                 urdf_path_list = [os.path.join(self.renderer_root_dir, value[4]) for value in dict.values()]
 
-        #while self.num_objects < object_count and attempts < max_attempts:
         for _ in range(1):
             self.save_state()
             if self.args.gen_scene_descriptor:
@@ -320,12 +302,10 @@ class ClutterRemovalSim(object):
                 x = obj_x_list[attempts]
                 y = obj_y_list[attempts]
                 scale = obj_scale_list[attempts]
-                #print(scale, angle, x, y, str(urdf))
 
             rotation = Rotation.from_rotvec(angle * np.r_[0.0, 0.0, 1.0])
             z = 1.0
             pose = Transform(rotation, np.r_[x, y, z])
-            #print(body_id, pose.rotation.as_quat(), pose.translation)
             body = self.world.load_urdf(urdf, pose, scale=self.global_scaling * scale)
             lower, upper = self.world.p.getAABB(body.uid)
             z = table_height + 0.5 * (upper[2] - lower[2]) + 0.002
@@ -437,7 +417,7 @@ class ClutterRemovalSim(object):
 
         remain_obj_inws_infos = []
         if remove:
-            remain_obj_inws_infos = self.remove_and_wait()  ### 这里要出去接blender渲染下一次抓取, [urdf, scale, rest_pose_quat, rest_pose_trans]
+            remain_obj_inws_infos = self.remove_and_wait()  ### wait for blender to render updated scene
 
         return result, remain_obj_inws_infos
 
@@ -494,8 +474,7 @@ class Gripper(object):
 
     def __init__(self, world):
         self.world = world
-        self.urdf_path = Path("src/gd/renderer_giga_sim/data/urdfs/panda/hand.urdf") #TODO
-
+        self.urdf_path = Path("data/assets/data/urdfs/panda/hand.urdf") #TODO put in cfg
         self.max_opening_width = 0.08
         self.finger_depth = 0.05
         self.T_body_tcp = Transform(Rotation.identity(), [0.0, 0.0, 0.022])

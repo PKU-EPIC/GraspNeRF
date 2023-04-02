@@ -1,7 +1,7 @@
 import os
 import numpy as np
 
-DATA_ROOT_DIR = '../../data/'
+DATA_ROOT_DIR = '../../data/traindata_example/'
 VGN_TRAIN_ROOT = DATA_ROOT_DIR + 'giga_hemisphere_train_demo'
 
 def add_scenes(root, type, filter_list=None):

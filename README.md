@@ -27,15 +27,22 @@ pip install -r requirements.txt
 ```
 to install dependency.
 
-## Data
-Please change the DATA_ROOT_DIR in `src/nr/asset.py` to your data path.
+## Data & Checkpoints
+1. Please download the [example data](https://drive.google.com/file/d/1Ku-EotayUhfv5DtXAvFitGzzdMF84Ve2/view?usp=share_link) to `data/` for training, and [rendering assets]() to `data/assets` for simulation. 
+Specifically, download [imagenet valset](https://image-net.org/data/ILSVRC/2010/ILSVRC2010_images_val.tar) to `data/assets/imagenet/images/val` which is used as random texture in simulation. 
+2. We provide pretrained weights for testing. Please download the [checkpoint]() to `src/nr/ckpt/test`. 
+
+## Testing
+Our grasp simulation pipeline is depend on blender and pybullet. Please verify the installation before running simulation.
+After the dependency and assets are ready, please run `bash run_simgrasp.sh`.
 
 ## Training
+Please run
 ```
 cd src/nr
-run `bash train.sh PATH_TO_CONFIG GPU_ID`. \
-e.g. `bash train.sh configs/nrvgn_sdf.yaml 0`
+bash train.sh PATH_TO_CONFIG GPU_ID
 ```
+e.g. `bash train.sh configs/nrvgn_sdf.yaml 0`.
 
 ## Citation
 If you find our work useful in your research, please consider citing:
