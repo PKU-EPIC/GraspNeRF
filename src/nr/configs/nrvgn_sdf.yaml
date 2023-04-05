@@ -1,0 +1,76 @@
+name: test
+group_name: ""
+# network
+fix_seed: true
+network:  grasp_nerf
+init_net_type: cost_volume
+agg_net_type: neus
+use_hierarchical_sampling: true
+use_depth: true
+use_depth_loss: true
+depth_loss_weight: 1.0
+dist_decoder_cfg:
+  use_vis: false
+fine_dist_decoder_cfg:
+  use_vis: false
+ray_batch_num: 4096 #2048
+sample_volume: true
+render_rgb: true
+volume_type: [sdf]
+
+volume_resolution: 40
+depth_sample_num: 40
+fine_depth_sample_num: 40
+agg_net_cfg:
+  sample_num: 40
+  init_s: 0.3
+  fix_s: 0
+fine_agg_net_cfg:
+  sample_num: 40
+  init_s: 0.3
+  fix_s: 0
+vis_vol: false
+
+# loss
+loss: [render, depth, sdf, vgn] 
+val_metric: [psnr_ssim, vis_img]
+key_metric_name: loss_vgn # depth_mae psnr_nr_fine
+key_metric_prefer: lower
+use_dr_loss: false
+use_dr_fine_loss: false
+use_nr_fine_loss: true
+render_depth: true
+depth_correct_ratio: 1.0
+depth_thresh: 0.8
+use_dr_prediction: false
+
+# lr
+total_step: 500000
+val_interval: 5000
+lr_type: exp_decay
+lr_cfg:
+  lr_init: 1.0e-4
+  decay_step: 100000
+  decay_rate: 0.5
+nr_initial_training_steps: 0
+
+# dataset
+train_dataset_type: gen
+train_dataset_cfg:
+  resolution_type: hr
+  type2sample_weights: { vgn_syn: 100 }  
+  train_database_types: ['vgn_syn']  
+  aug_pixel_center_sample: true
+  aug_view_select_type: hard
+  ref_pad_interval: 32
+  use_src_imgs: true
+  num_input_views: 6
+
+val_set_list:
+  -
+    name: vgn_syn
+    type: gen
+    val_scene_num: -1 # if the set, use val scene list in asset.py
+    cfg:
+      use_src_imgs: true
+      num_input_views: 6
