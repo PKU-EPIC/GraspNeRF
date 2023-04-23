@@ -19,7 +19,7 @@ Experiments in synthetic and real-world environments demonstrate that our method
 This repository provides:
 - PyTorch code, and weights of GraspNeRF.
 - Grasp Simulator based on blender and pybullet.
-- Multiview 6-DoF Grasping Dataset Generator and Examples: Coming soon (this or next week).
+- Multiview 6-DoF Grasping Dataset Generator and Examples.
 
 ## Dependency
 1. Please run 
@@ -28,7 +28,8 @@ pip install -r requirements.txt
 ```
 to install dependency.
 
-2. (optional) Please install [blender](https://www.blender.org/) if you need simulation.
+2. (optional) Please install [blender 2.93.3--Ubuntu](https://www.blender.org/) if you need simulation.
+
 ## Data & Checkpoints
 1. Please generate or download and uncompress the [example data](https://drive.google.com/file/d/1Ku-EotayUhfv5DtXAvFitGzzdMF84Ve2/view?usp=share_link) to `data/` for training, and [rendering assets](https://drive.google.com/file/d/1Udvi2QQ6AtYDLUWY0oH-PO2R6kZBxJLT/view?usp=share_link) to `data/assets` for simulation. 
 Specifically, download [imagenet valset](https://image-net.org/data/ILSVRC/2010/ILSVRC2010_images_val.tar) to `data/assets/imagenet/images/val` which is used as random texture in simulation. 
@@ -42,13 +43,16 @@ After the dependency and assets are ready, please run
 bash run_simgrasp.sh
 ```
 
-
 ## Training
 After the training data is ready, please run
 ```
 bash train.sh GPU_ID
 ```
 e.g. `bash train.sh 0`.
+
+## Data Generator
+1. Download the scene descriptor files from [GIGA](https://github.com/UT-Austin-RPL/GIGA#pre-generated-data) and [assets]()
+2. For example, run run_pile_rand.sh (./data_generator) for pile data generation.
 
 ## Citation
 If you find our work useful in your research, please consider citing:
