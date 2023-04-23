@@ -51,8 +51,12 @@ bash train.sh GPU_ID
 e.g. `bash train.sh 0`.
 
 ## Data Generator
-1. Download the scene descriptor files from [GIGA](https://github.com/UT-Austin-RPL/GIGA#pre-generated-data) and [assets]()
-2. For example, run run_pile_rand.sh (./data_generator) for pile data generation.
+1. Download the scene descriptor files from [GIGA](https://github.com/UT-Austin-RPL/GIGA#pre-generated-data) and [assets](https://drive.google.com/file/d/1-59zcQ8h5esT_ogjaDjtzQ6sG70WNWzU/view?usp=share_link).
+2. For example, run 
+```
+bash run_pile_rand.sh 
+```
+in ./data_generator for pile data generation.
 
 ## Citation
 If you find our work useful in your research, please consider citing:
