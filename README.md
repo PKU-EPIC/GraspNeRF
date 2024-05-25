@@ -69,6 +69,15 @@ If you find our work useful in your research, please consider citing:
   year={2023}
 ```
 
+## License
+
+ This work and the dataset are licensed under [CC BY-NC 4.0][cc-by-nc].
+
+ [![CC BY-NC 4.0][cc-by-nc-image]][cc-by-nc]
+
+ [cc-by-nc]: https://creativecommons.org/licenses/by-nc/4.0/
+ [cc-by-nc-image]: https://licensebuttons.net/l/by-nc/4.0/88x31.png
+
 ## Contact
 If you have any questions, please open a github issue or contact us:
 
